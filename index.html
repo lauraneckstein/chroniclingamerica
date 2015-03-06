@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<head>
+<meta charset="UTF-8">
+<title> American Indian and Alaskan Native Casinos by Laura Newman Eckstein. Dedicated to Laurie Allen, Librarian, Haverford College, November 16, 2014
+</title>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+
+</head>
+
+<body>
+
+	<div id="map" style="width: 600px; height: 400px"></div>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet-src.js"></script>
+	<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script>
+
+      function main() {
+        var map = new L.Map('map', {
+          zoomControl: false,
+          center: [43, 0],
+          zoom: 3
+        });
+        L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.jpg', {
+          attribution: 'Stamen'
+        }).addTo(map);
+        cartodb.createLayer(map, 'http://lauraneckstein.cartodb.com/api/v2/viz/8b8f6638-b398-11e4-a5e5-0e853d047bba/viz.json')
+            .addTo(map)
+         .on('done', function(layer) {
+          layer.setInteraction(true);
+          layer.on('featureOver', function(e, pos, latlng, data) {
+            cartodb.log.log(e, pos, latlng, data);
+          });
+          layer.on('error', function(err) {
+            cartodb.log.log('error: ' + err);
+          });
+        }).on('error', function() {
+          cartodb.log.log("some error occurred");
+        });
+      }
+      // you could use $(window).load(main);
+      window.onload = main;	</script>
+</body>
+
+</html>
